@@ -39,8 +39,30 @@
     <div id="message"></div>
     <div id="notes"></div>
     <div class="board"></div>
+    <section id="remaining">
+      <p></p>
+    </section>
     <section id="control">
-      <p>control buttons incoming</p>
+      <form>
+        <label for="boardSize">Choose Board Size:</label>
+        <select name="boardSize" id="boardSize">
+          <option value="2">2x2</option>
+          <option value="3">3x3</option>
+          <option value="4" selected>4x4</option>
+          <option value="5">5x5</option>
+          <option value="6">6x6</option>
+        </select>
+      </form>
+      <form>
+        <label for="mineAmount">Amount of Mines:</label>
+        <select name="mineAmount" id="mineAmount">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>          
+          <option value="high">High</option>
+        </select>
+      </form>
+      <span><button id="reset">Reset</button></span><br>
+      
     </section>
   </body>
 </html>

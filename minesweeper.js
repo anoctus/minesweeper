@@ -3,12 +3,14 @@ document.addEventListener('DOMContentLoaded', startGame)
 // Define your `board` object here!
 var board = {};
 var size = 4; // default size 4
-var minesTotal = 4; // default size 4
+var minesTotal = 5; // default size 5
+var flagged = 0;
 
 function startGame () {
   
-  generateBoard();
+  generateBoard();  
   randomMines();
+  remaining()
 
   for (let i = 0; i < board.cells.length; i++) {
     board['cells'][i].surroundingMines = countSurroundingMines(board['cells'][i]);
@@ -16,6 +18,8 @@ function startGame () {
   
   document.addEventListener('click', checkForWin);
   document.addEventListener('contextmenu', checkForWin);
+  document.addEventListener('contextmenu', remaining);
+  document.getElementById('reset').addEventListener('click', reset);
   
 
   // Don't remove this function call: it makes the game work!    
@@ -118,4 +122,103 @@ function randomMines() {
   for (let i = 0; i < pickCells.length; i++) {
     board.cells[pickCells[i]].isMine = true;
   }
+}
+
+function reset(){  
+  document.querySelector(".board").innerHTML = " ";
+  size = parseInt(document.getElementById("boardSize").value);
+  mineAmount();
+  startGame();
+}
+
+// to set the number of mines according to 2 conditions, the "Choose Board Size" and the "Amount of Mines" dropdowns
+function mineAmount() {
+  let amount = document.getElementById("mineAmount").value;
+  console.log("size is " + size);
+  switch (size) {    
+    case 2:
+      
+      switch (amount) {
+        case 'low':
+            minesTotal = 1;
+            break;
+        case 'medium':
+          minesTotal = 2;
+          break;
+        case 'high':
+          minesTotal = 3;
+          break;          
+        }
+       break; 
+    case 3:
+      console.log("size is " + size);
+      switch (amount) {
+        case "low":
+          minesTotal = 2;
+          break;
+        case "medium":
+          minesTotal = 3;
+            break;
+        case "high":
+          minesTotal = 4;
+          break;          
+      }
+      break;
+    case 4:
+      switch (amount) {
+        case "low":
+          minesTotal = 3;
+          break;
+        case "medium":
+          minesTotal = 5;
+            break;
+        case "high":
+          minesTotal = 7;
+          break;          
+      }
+      break;
+    case 5:
+      switch (amount) {
+        case "low":
+          minesTotal = 4;
+          break;
+        case "medium":
+          minesTotal = 7;
+            break;
+        case "high":
+          minesTotal = 10;
+          break;          
+      }
+      break;
+    case 6:
+      switch (amount) {
+        case "low":
+          minesTotal = 5;
+          break;
+        case "medium":
+          minesTotal = 9;
+            break;
+        case "high":
+          minesTotal = 13;
+          break;          
+      }
+      break;
+  }
+}
+
+// check for remaining mines
+function remaining() {
+  checkFlagged();
+  document.getElementById('remaining').innerHTML = "Remaining Mines: " + (minesTotal - flagged);
+}
+
+function checkFlagged() {
+
+  let totalFlagged = 0;
+  board.cells.forEach( function(cell) {
+    if (cell.isMarked === true) {
+      totalFlagged += 1;
+    };
+  });
+  flagged = totalFlagged;
 }
